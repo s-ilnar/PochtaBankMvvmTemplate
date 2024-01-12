@@ -1,18 +1,15 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.silnar.pochtabankmvvmtemplate</id>
-    <name>PochtaBankMvvmTemplate Template</name>
-    <vendor>s-ilnar</vendor>
-
+    <id>ru.pochtabank.templates</id>
+    <name>Шаблоны ПБ</name>
+    <vendor>Почта Банк</vendor>
+    <description>Плагин для создания типовых объектов для проекта “Почта Банк Онлайн”.</description>
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
+    <depends>org.jetbrains.android</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.silnar.pochtabankmvvmtemplate.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+    <extensions defaultExtensionNs="com.android.tools.idea.wizard.template">
+        <wizardTemplateProvider implementation="ru.pochtabank.templates.WizardTemplateProviderImpl" />
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.silnar.pochtabankmvvmtemplate.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
 </idea-plugin>
