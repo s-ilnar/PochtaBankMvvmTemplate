@@ -5,7 +5,7 @@ import com.android.tools.idea.wizard.template.renderIf
 import ru.pochtabank.templates.core.utils.getRouteStateModelName
 import ru.pochtabank.templates.core.utils.getUiModelsPackageName
 import ru.pochtabank.templates.core.utils.getUiStateModelName
-import ru.pochtabank.templates.viewModelFragment.BuildSettings
+import ru.pochtabank.templates.models.BuildSettings
 
 fun blankViewModelKt(
     buildSettings: BuildSettings,
@@ -36,8 +36,7 @@ ${renderIf (buildSettings.isGenerateRoutingStateModel) {
 }}
 
 
-
-internal class ${buildSettings.entityName}ViewModel() : BaseViewModel() {
+${buildSettings.visibilityType.getClassVisibility()}class ${buildSettings.entityName}ViewModel() : BaseViewModel() {
     ${renderIf (buildSettings.isGenerateUiStateModel) {
         """private val viewStateData = MutableLiveData<${getUiStateModelName(buildSettings.entityName)}>()
     val viewState: LiveData<${getUiStateModelName(buildSettings.entityName)}> = viewStateData"""

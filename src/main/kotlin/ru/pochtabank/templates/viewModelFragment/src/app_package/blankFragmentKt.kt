@@ -4,7 +4,7 @@ import com.android.tools.idea.wizard.template.escapeKotlinIdentifier
 import com.android.tools.idea.wizard.template.renderIf
 import com.android.tools.idea.wizard.template.underscoreToCamelCase
 import ru.pochtabank.templates.core.utils.getRootPackageName
-import ru.pochtabank.templates.viewModelFragment.BuildSettings
+import ru.pochtabank.templates.models.BuildSettings
 
 fun blankFragmentKt(
     buildSettings: BuildSettings,
@@ -18,23 +18,26 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.pochtabank.ui.base.mvvm.BaseMvvmFragment
 import org.koin.core.parameter.parametersOf
-import ${getRootPackageName(buildSettings.packageName)}.databinding.${underscoreToCamelCase(buildSettings.layoutName)}Binding
+import ${getRootPackageName(buildSettings.moduleData)}.databinding.${underscoreToCamelCase(buildSettings.layoutName)}Binding
+${renderIf (buildSettings.isGenerateRoutingStateModel) {
+"""import ru.pochtabank.ui.routing.Routing""" }}
 
-internal class ${buildSettings.entityName}Fragment :
-    BaseMvvmFragment<${underscoreToCamelCase(buildSettings.layoutName)}Binding>(${underscoreToCamelCase(buildSettings.layoutName)}Binding::inflate) {
+${buildSettings.visibilityType.getClassVisibility()}class ${buildSettings.entityName}Fragment : BaseMvvmFragment<${underscoreToCamelCase(buildSettings.layoutName)}Binding>(${underscoreToCamelCase(buildSettings.layoutName)}Binding::inflate) {
 
     override val viewModel: ${buildSettings.entityName}ViewModel by viewModel()
+    ${renderIf (buildSettings.isGenerateRoutingStateModel) {
+        """private val routing: Routing by inject()""" }}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         ${renderIf (buildSettings.isGenerateUiStateModel) { 
-        """subscribeViewState()""" }}
+        """observeViewState()""" }}
         ${renderIf (buildSettings.isGenerateRoutingStateModel) {
-        """subscribeRoutingState()""" }}
+        """observeRoutingState()""" }}
     }
 
     ${renderIf (buildSettings.isGenerateUiStateModel) {
-        """private fun subscribeViewState() {
+        """private fun observeViewState() {
         viewModel.viewState.observe(viewLifecycleOwner) { state ->
             //TODO(Реализовать подписку на состояние экрана) 
             //stopship
@@ -42,7 +45,7 @@ internal class ${buildSettings.entityName}Fragment :
     }""" }}
 
     ${renderIf (buildSettings.isGenerateRoutingStateModel) {
-    """private fun subscribeRoutingState() {
+    """private fun observeRoutingState() {
         viewModel.routeState.observe(viewLifecycleOwner) {
             //TODO(Реализовать подписку на состояние роутинга либо удалить)
             //stopship
@@ -50,14 +53,12 @@ internal class ${buildSettings.entityName}Fragment :
     }""" }}
 
     companion object {
-        @JvmStatic
         fun createFragment(bundle: Bundle): Fragment {
             return ${buildSettings.entityName}Fragment().apply {
                 arguments = bundle
             }
         }
 
-        @JvmStatic
         fun createExtras(): Bundle {
             return Bundle()
         }

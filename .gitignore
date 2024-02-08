@@ -1,4 +1,15 @@
 .gradle
 .idea
 .qodana
-build
+/build/searchableOptions/
+/build/patchedPluginXmlFiles/
+/build/tmp/
+/build/idea-sandbox/
+/build/kotlin/compileKotlin/
+/build/instrumented/instrumentCode/
+/build/distributions/
+/build/classes/kotlin/main/
+/build/resources/main/META-INF/
+/build/libsSearchableOptions/lib/
+/build/libs/instrumented-PochtaBankMvvmTemplate-0.0.1.jar
+/build/libs/instrumented-PochtaBankMvvmTemplate-1.0.0.jar
